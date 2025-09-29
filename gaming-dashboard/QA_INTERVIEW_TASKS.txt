@@ -1,0 +1,132 @@
+OVERVIEW
+========
+Welcome to the QA Automation Engineer interview! You have been provided with a Gaming Dashboard application that needs comprehensive testing. Your task is to evaluate the application's functionality, identify potential issues, and demonstrate your testing expertise.
+
+
+
+TASK 1: ENVIRONMENT SETUP & INITIAL EXPLORATION 
+==============================================================
+
+Your Task:
+1. Setup the Application
+   - Follow the README.md instructions to install and run the application
+   - Verify the application loads successfully at http://localhost:3000
+   - Document any setup issues encountered
+
+2. Initial Application Exploration
+   - Navigate through the login page
+   - Identify all interactive elements
+   - Note the overall application structure
+
+Deliverable:
+- Confirm application is running
+- Brief summary of initial observations
+
+TASK 2: USER AUTHENTICATION TESTING 
+================================================
+
+Your Task:
+Test the login functionality using the provided user credentials.
+
+Test Scenarios:
+1. Valid Login Testing
+   - Test at least 5 different valid users from public/users.csv
+   - Verify successful login and dashboard access
+   - Test the logout functionality
+
+2. Invalid Login Testing
+   - Test with incorrect passwords
+   - Test with non-existent usernames
+   - Test with empty fields
+   - Test with special characters
+
+
+Deliverable:
+- Document all test results
+- List any bugs or unexpected behavior found
+
+TASK 3: DATA VALIDATION & ACCURACY 
+===============================================
+
+Your Task:
+Verify that the UI displays data accurately from the source files.
+
+Data Validation Points:
+
+1. Sales Data Verification
+   - Count total number of games displayed (should be 20)
+   - Verify at least 5 random entries match public/sales-data.json
+   - Check revenue formatting (currency display)
+   - Validate date formatting
+
+2. Top 5 Games Verification
+   - Verify the ranking order matches public/top-games.json
+   - Check that all 5 games are displayed
+   - Validate revenue amounts
+   - Confirm platform information
+
+
+
+Calculation to Verify:
+Expected Totals:
+- Xbox: 5 games, $3,790,000
+- Steam: 5 games, $8,680,000
+- Nintendo: 5 games, $5,600,000
+- PlayStation: 5 games, $6,930,000
+- Grand Total: 20 games, $25,000,000
+
+Deliverable:
+- Data accuracy report
+- Any discrepancies found between UI and source data
+
+TASK 4: FUNCTIONALITY TESTING 
+==========================================
+
+Your Task:
+Test the interactive features of the dashboard.
+
+Test Scenarios:
+
+1. Platform Filtering
+   - Test each platform filter (Xbox, Steam, Nintendo, PlayStation)
+   - Verify "All" option shows all games
+   - Check that filtered results are accurate
+   - Verify revenue totals update correctly when filtering
+
+
+Deliverable:
+- Functionality test results
+- Any UI/UX issues identified
+- Recommendations for improvement
+
+
+TASK 6: TEST AUTOMATION STRATEGY 
+=============================================
+
+Your Task:
+Design a test automation strategy for this application.
+
+Questions to Address:
+
+1. Framework Selection
+   - Which test automation framework would you recommend?
+   - Justify your choice (Selenium, Cypress, Playwright, etc.)
+
+2. Test Case Prioritization
+   - Which test cases should be automated first?
+   - What would you leave for manual testing?
+
+3. Test Data Management
+   - How would you handle the CSV and JSON test data?
+   - Strategy for test data creation and maintenance
+
+4. CI/CD Integration
+   - How would you integrate these tests into a CI/CD pipeline?
+   - What reporting mechanisms would you implement?
+
+Deliverable:
+- Written test automation strategy document
+- High-level test automation framework proposal
+
+
+
