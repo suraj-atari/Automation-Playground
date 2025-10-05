@@ -21,6 +21,20 @@ Your Task:
 Deliverable:
 - Confirm application is running
 - Brief summary of initial observations
+=================================================================================================================================================
+Task 1 Deliverable: Observations on Initial Exploration
+
+Login Page: Fields for username & password, login button, error message on invalid input.
+Dashboard:
+Top Summary Cards → Total Games , Total Revenue, Total Gaming Platform
+Sales Table → All games with columns for Rank, Name, Platform, Revenue, Date
+Top-5 Games games → Displays top 5 by revenue with name, platform, revenue
+Platform Filter Dropdown → Allows filtering by Xbox / Steam / Nintendo / PlayStation / All
+
+Overall structure is simple and responsive.
+Application is running and stable. Initial exploration confirms core modules (login, sales data table, top-5 games, platform filtering, revenues)
+=====================================================================================================================================================
+
 
 TASK 2: USER AUTHENTICATION TESTING 
 ================================================
@@ -44,6 +58,23 @@ Test Scenarios:
 Deliverable:
 - Document all test results
 - List any bugs or unexpected behavior found
+
+=================================================================================================================================================
+Task 2 Deliverable: Test Scenarios & Findings
+
+Scenario	                             Steps Taken	                                                        Result
+Valid Login 	             Used valid creds from public/users.csv                 Successfully logged in and redirected to dashboard
+Logout	                     Used logout option after login	                        Session ended, redirected to login page
+Invalid password	         Mixed correct username with wrong password	                     Error message displayed (Correct)
+Non-existent username	               Random usernames                                            Error message displayed (Correct)
+Empty fields	                  Left username or password blank	                              Error validation displayed (Correct)
+Special characters	            Used special symbols in fields	                                 Error message displayed (Correct)
+
+
+Bugs/Issues Noted: No limit warning after repeated failed attempts. 
+
+=====================================================================================================================================================
+
 
 TASK 3: DATA VALIDATION & ACCURACY 
 ===============================================
@@ -79,6 +110,37 @@ Deliverable:
 - Data accuracy report
 - Any discrepancies found between UI and source data
 
+
+
+=================================================================================================================================================
+Task 3 Deliverable: Data Validation & Accuracy
+
+Sales Data Verification
+UI displayed exactly 20 games as expected.
+Cross-checked random games with public/sales-data.json → Names, platforms, revenue, dates matched.
+Verified revenue format → $ → correct currency formatting.
+Verified date format → DD/MM/YYYY → correct.
+
+Top 5 Games Verification
+Cross-checked with public/top-games.json: Correct rank, names, revenue, platforms
+
+
+
+Platform Totals Verification
+
+Platform	                Expected	            	        Result
+Xbox	               5 games, $3,790,000	                 matched	
+Steam	               5 games, $8,680,000	                 matched	
+Nintendo	            5 games, $5,600,000	                 matched	
+PlayStation	         5 games, $6,930,000	                 not-matched	(Actual- 5,640,000)
+Grand Total	         20 games, $25,000,000	              not-matched	(Actual- 23,710,000)
+
+Discrepancies found between UI and source data: PlayStation and Grand Total did not match the expected JSON source data.
+
+=====================================================================================================================================================
+
+
+
 TASK 4: FUNCTIONALITY TESTING 
 ==========================================
 
@@ -100,6 +162,28 @@ Deliverable:
 - Recommendations for improvement
 
 
+=================================================================================================================================================
+Task 4 Deliverable: FUNCTIONALITY TESTING 
+
+Platform Filtering
+Verified dropdown filters each platform correctly.
+“All” option resets table to show all 20 games.
+Validated revenue totals update dynamically when filters change.
+Verified table rows only show games for selected platform
+
+Identified UI/UX issues: No major issues were found except a minor one, In the “Top 5 Games by Revenue” section, long game titles such as “The Legend of Zelda: Tears of the Kingdom” appear too close to the revenue figure, making the row look uneven and slightly cluttered. Proper alignment or centered wrapping of the text would enhance readability and create a cleaner visual appearance.
+
+Recommendations for improvement:
+1. Add Sorting to Sales Data: Enable sorting by Game Name, Revenue, and Date to improve data accessibility and allow quick analysis (e.g., highest revenue or latest date first).
+2. Add Grid Filters to Sales Data: Provide filter options (e.g., by Date, Revenue range, Platform) to give users more control and make it easier to focus on relevant data.
+3. Adjusting the Sales Data section’s right margin or width so that its right edge aligns vertically with the “Total Games” card’s edge above it, enhance the visual grid structure of the dashboard
+4. The Platform Statistics cards currently do not have a hover interaction, which makes them feel static compared to other interactive elements (like the summary cards and grids)
+
+=====================================================================================================================================================
+
+
+
+
 TASK 6: TEST AUTOMATION STRATEGY 
 =============================================
 
@@ -112,13 +196,54 @@ Questions to Address:
    - Which test automation framework would you recommend?
    - Justify your choice (Selenium, Cypress, Playwright, etc.)
 
+=================================================================================================================================================
+I recommend Selenium because of my strong experience with it, its excellent multi-browser and multi-platform support, and language flexibility with Java. It also integrates seamlessly with tools like Maven, TestNG, Jenkins, and GitLab, making it reliable and efficient for scalable test automation.
+=================================================================================================================================================
+
 2. Test Case Prioritization
    - Which test cases should be automated first?
    - What would you leave for manual testing?
+=================================================================================================================================================
+Test Case Prioritization
+1. Smoke and Regression Tests(Login/logout flow, Navigation between dashboard sections, Validation of total revenue, total games, and platform counts, Filters (e.g., platform dropdown), top 5 games verification)
+2. Critical UI Validations (Presence and visibility of major components (cards, tables, graphs), Validation of table data (e.g., date formats, revenue format, currency symbol), Alignment and responsiveness of key widgets)
+3. Data-driven Validations (Comparing displayed values with back-end data (CSV/JSON input), Verifying calculated totals and platform-wise revenue splits)
+
+Keep for manual testing
+1. Visual/UX assessments (color contrast, look & feel, alignment issues)
+2. Ad-hoc exploratory testing to uncover edge cases
+3. Newly developed or unstable features (until the functionality stabilizes)
+4. Cross-browser visual differences that often need human judgment
+
+=================================================================================================================================================
 
 3. Test Data Management
    - How would you handle the CSV and JSON test data?
    - Strategy for test data creation and maintenance
+=================================================================================================================================================
+Handling the CSV and JSON test data
+I would take a data-driven testing approach so that test logic stays separate from the data. 
+Keep all CSV and JSON files in a dedicated /test-data folder in the automation repo
+1. For Json I will use ObjectMapper, is part of the Jackson library in Java. It’s used to read/write JSON data.
+File file = new File("testdata/top-games.json"); points to the JSON file that contains test data. (Same way I have used in this project while automationg)
+2. For CSV I will use FileReader -> Reads the CSV file from the specified path --> CSVParser (from Apache Commons CSV library) → Parses the CSV content into a structured format (rows & columns) that you can easily iterate over in tests (Same way I have used in this project while automationg)
+
+
+Strategy for test data creation and maintenance
+1. Prepare sample CSV files for Valid game names, platforms, revenues, revenue and dates
+2. Use JSON files for Top games list, Platform configurations or expected totals\
+3. Cover Different Test Scenarios (Include happy-path data (normal, expected records), Include edge-case data(Zero or negative revenue, Missing Dates or revenues, Extremely long game names)
+4. Use separate data files for Dev, QA, and Staging environments if the dataset differs.
+5. Use configuration files (e.g., config.json or environment variables) to switch between them without changing the test code.
+
+Test Data Maintenance
+1. Keep all test data in a dedicated folder like /test-data within the repository.
+2. Version-control the data files alongside the code so changes are tracked.
+3. Implement a simple utility to read data from CSV/JSON and pass it into tests dynamically. This way, any change in the data doesn’t require code changes in test cases.
+4. Minimize Hard-Coded Data, making the locators more generic and robust, makes it easier to add new scenarios or modify existing ones without touching the automation code.
+
+=================================================================================================================================================
+
 
 4. CI/CD Integration
    - How would you integrate these tests into a CI/CD pipeline?
@@ -127,6 +252,59 @@ Questions to Address:
 Deliverable:
 - Written test automation strategy document
 - High-level test automation framework proposal
+
+=================================================================================================================================================
+CI/CD Integration
+Use existing CI/CD tool (e.g., GitHub Actions / Jenkins / GitLab CI).
+
+Pipeline stages:
+1. Build & Unit Tests
+2. Deploy to Test Environment
+3. Run Automated Tests (UI, API, data validations)
+4. Publish Reports & Notify Stakeholders
+5. Smoke Tests: Run on every PR for quick feedback.
+6. Regression Suite: Run nightly or pre-release.
+7. Use parallel execution & tagging (@smoke, @regression) for efficiency.
+8. Manage environment configs (URLs, creds, data) via variables or config files
+
+
+Reporting
+1. Use built-in Selenium HTML reports for local debugging.
+2. Integrate Allure/Extent Reports for:
+ - Pass/fail trends & charts
+ - Screenshots, logs
+3. Configure Slack/Email notifications to share pipeline results.
+
+
+Deliverable: Test automation strategy and High-Level Test Automation Framework Proposal
+
+A Hybrid Test Automation Framework using Selenium WebDriver + TestNG, built with Page Object Model (POM) and Data-Driven Testing, to ensure scalability, maintainability, and easy CI/CD integration.
+
+Tool Selection - Selenium WebDriver – For browser automation, RestAssured for API Automation
+TestNG – For test execution, grouping, prioritization, and parallel runs
+Maven – For build and dependency management
+POM (Page Object Model) – To separate page locators and actions for better reusability
+Data-Driven Testing – Using CSV/JSON/Properties for test input and environment configs
+Utility Layer – Common helper classes (e.g., data readers, wait handlers, API utilities)
+Reporting – Using Allure Reports or Extent Reports for detailed insights
+CI/CD Integration – Using Jenkins/GitHub Actions for automated execution in pipelines
+
+/src
+  /main/java
+     /pages               # Page classes for UI components
+     /utils               # Helper classes (e.g., WebDriverFactory, DataReader)
+  /test/java
+     /tests               # Smoke, Regression, and Functional test classes
+/config
+   config.properties      # Environment configs (URLs, credentials)
+ /test-data
+   salesData.csv          # Bulk sales data
+   topGames.json          # Expected top-5 games data
+/reports
+   allure-results
+   extent-reports
+testng.xml                # Test suite configuration
+pom.xml                   # Maven dependencies
 
 
 
